@@ -1,0 +1,22 @@
+public class UniqueDigitNumbers {
+    public static int countNumbersWithUniqueDigits(int n) {
+        if (n == 0) return 1;  // Base case: 1 way to have 0 digits (the empty number).
+        if (n > 10) return 0;  // There are only 10 unique digits, so no number with more than 10 digits can have unique digits.
+
+        int result = 9;  // First digit has 9 choices (1-9).
+        int choices = 9;  // The second digit has 9 choices (0-9, excluding the first digit).
+
+        // Calculate the number of unique digit numbers
+        for (int i = 1; i < n; i++) {
+            result *= choices;
+            choices--;  // Decrease choices as we select more digits.
+        }
+
+        return result + countNumbersWithUniqueDigits(n - 1);  // Include smaller cases (n-1 digits).
+    }
+
+    public static void main(String[] args) {
+        int n = 3;
+        System.out.println("Count of numbers with " + n + " unique digits: " + countNumbersWithUniqueDigits(n));  // Output: 739
+    }
+}
