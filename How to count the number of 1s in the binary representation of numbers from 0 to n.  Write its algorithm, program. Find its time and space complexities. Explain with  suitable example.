@@ -1,0 +1,23 @@
+public class CountOnesInBinary {
+    
+    // Function to count number of 1s in binary representations of numbers from 0 to n
+    public static int countOnes(int n) {
+        // Array to store the number of 1s for each number from 0 to n
+        int[] count = new int[n + 1];
+        int totalOnes = 0;
+
+        // Loop through all numbers from 1 to n
+        for (int i = 1; i <= n; i++) {
+            // count[i] = count of 1s in i >> 1 + (i & 1) which tells if the least significant bit is 1
+            count[i] = count[i >> 1] + (i & 1);
+            totalOnes += count[i];  // Add the count of 1s in the binary representation of i
+        }
+
+        return totalOnes;
+    }
+
+    public static void main(String[] args) {
+        int n = 5;  // Example input
+        System.out.println("Total number of 1s in binary representations of numbers from 0 to " + n + ": " + countOnes(n));  // Output: 7
+    }
+}
