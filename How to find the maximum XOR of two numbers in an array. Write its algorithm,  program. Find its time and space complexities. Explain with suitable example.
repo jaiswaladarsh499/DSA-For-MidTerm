@@ -1,0 +1,60 @@
+class TrieNode {
+    TrieNode[] children = new TrieNode[2];  // Binary trie, 2 children (0 and 1)
+}
+
+public class MaximumXOR {
+    
+    // Function to insert a number into the Trie
+    public static void insert(TrieNode root, int num) {
+        TrieNode node = root;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;  // Get the ith bit
+            if (node.children[bit] == null) {
+                node.children[bit] = new TrieNode();
+            }
+            node = node.children[bit];
+        }
+    }
+
+    // Function to find the maximum XOR of num with any number in the Trie
+    public static int findMaxXOR(TrieNode root, int num) {
+        TrieNode node = root;
+        int maxXor = 0;
+        for (int i = 31; i >= 0; i--) {
+            int bit = (num >> i) & 1;  // Get the ith bit
+            int oppositeBit = 1 - bit; // Opposite bit for maximization
+
+            // Check if the opposite bit exists, if so, take it to maximize XOR
+            if (node.children[oppositeBit] != null) {
+                maxXor |= (1 << i);  // Set the ith bit of maxXor
+                node = node.children[oppositeBit];
+            } else {
+                node = node.children[bit];
+            }
+        }
+        return maxXor;
+    }
+
+    // Function to find the maximum XOR of two numbers in the array
+    public static int findMaximumXOR(int[] nums) {
+        TrieNode root = new TrieNode();
+        int maxXor = 0;
+
+        // Insert the first number and then check the rest
+        for (int num : nums) {
+            insert(root, num);
+        }
+
+        // Now find the maximum XOR for each number with the current Trie
+        for (int num : nums) {
+            maxXor = Math.max(maxXor, findMaxXOR(root, num));
+        }
+
+        return maxXor;
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {3, 10, 5, 25, 2, 8};
+        System.out.println("Maximum XOR of two numbers in the array: " + findMaximumXOR(nums));  // Output: 28
+    }
+}
