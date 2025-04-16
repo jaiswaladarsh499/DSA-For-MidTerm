@@ -1,0 +1,28 @@
+public class StringPermutations {
+
+    // Main function to generate permutations
+    public static void generatePermutations(char[] chars, int index) {
+        if (index == chars.length - 1) {
+            System.out.println(String.valueOf(chars));
+            return;
+        }
+
+        for (int i = index; i < chars.length; i++) {
+            swap(chars, i, index); // Fix the character
+            generatePermutations(chars, index + 1); // Recurse
+            swap(chars, i, index); // Backtrack
+        }
+    }
+
+    // Helper function to swap characters in array
+    public static void swap(char[] arr, int i, int j) {
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    public static void main(String[] args) {
+        String input = "ABC";
+        generatePermutations(input.toCharArray(), 0);
+    }
+}
