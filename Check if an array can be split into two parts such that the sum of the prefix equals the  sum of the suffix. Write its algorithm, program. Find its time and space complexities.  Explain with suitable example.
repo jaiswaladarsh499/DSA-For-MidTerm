@@ -1,0 +1,29 @@
+public class EqualPrefixSuffixSplit {
+
+    public static boolean canBeSplit(int[] arr) {
+        int totalSum = 0;
+        for (int num : arr) {
+            totalSum += num;
+        }
+
+        int prefixSum = 0;
+        for (int i = 0; i < arr.length - 1; i++) {
+            prefixSum += arr[i];
+            int suffixSum = totalSum - prefixSum;
+            if (prefixSum == suffixSum) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {1, 2, 3, 3};
+        if (canBeSplit(arr)) {
+            System.out.println("The array can be split into equal prefix and suffix sums.");
+        } else {
+            System.out.println("The array cannot be split.");
+        }
+    }
+}
