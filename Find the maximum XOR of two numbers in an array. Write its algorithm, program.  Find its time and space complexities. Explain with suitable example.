@@ -1,0 +1,62 @@
+class TrieNode {
+    TrieNode[] children = new TrieNode[2];
+}
+
+public class MaximumXOR {
+    
+    // Function to insert number into the trie
+    private void insert(int num, TrieNode root, int L) {
+        TrieNode node = root;
+        for (int i = L - 1; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            if (node.children[bit] == null) {
+                node.children[bit] = new TrieNode();
+            }
+            node = node.children[bit];
+        }
+    }
+
+    // Function to find maximum XOR for a given number with numbers in the trie
+    private int findMaxXOR(int num, TrieNode root, int L) {
+        TrieNode node = root;
+        int maxXOR = 0;
+        
+        for (int i = L - 1; i >= 0; i--) {
+            int bit = (num >> i) & 1;
+            int oppositeBit = 1 - bit;
+            if (node.children[oppositeBit] != null) {
+                maxXOR |= (1 << i);
+                node = node.children[oppositeBit];
+            } else {
+                node = node.children[bit];
+            }
+        }
+        
+        return maxXOR;
+    }
+    
+    public int findMaximumXOR(int[] nums) {
+        int max = Integer.MIN_VALUE;
+        int L = 32; // assuming 32-bit integer values
+        
+        TrieNode root = new TrieNode();
+        
+        // Insert numbers into the trie
+        for (int num : nums) {
+            insert(num, root, L);
+        }
+        
+        // Find the maximum XOR for each number
+        for (int num : nums) {
+            max = Math.max(max, findMaxXOR(num, root, L));
+        }
+        
+        return max;
+    }
+
+    public static void main(String[] args) {
+        MaximumXOR obj = new MaximumXOR();
+        int[] nums = {3, 10, 5, 25, 2, 8};
+        System.out.println("Maximum XOR: " + obj.findMaximumXOR(nums));  // Output: 28
+    }
+}
